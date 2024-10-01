@@ -29,6 +29,8 @@ ranked_words = sorted(word_counts.items(), key=get_item, reverse=True)
 
 df = pd.DataFrame(ranked_words, columns=["Word", "Frequency"])
 df["Rank"] = df["Frequency"].rank(ascending=False, method="first")
+df["R*F"] = df["Rank"] * df["Frequency"]
+
 print(df)
 df.to_csv("zipf_table.csv", index=False)
 plt.plot(df["Rank"], df["Frequency"])
