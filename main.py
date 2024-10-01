@@ -16,7 +16,7 @@ url = "https://lv.wikipedia.org/wiki/Latvija"
 response = requests.get(url)
 soup = BeautifulSoup(response.text, 'html.parser')
 text = soup.get_text()
-text = re.sub(r'\W+', ' ', text.lower())
+text = re.sub(r'[^a-zāčēģīķļņōšūžA-ZĀČĒĢĪĶĻŅŌŠŪŽ]+', ' ', text.lower())
 words = text.split()
 
 # Prawo Zipfa
@@ -43,7 +43,7 @@ plt.figure(figsize=(20, 20))
 
 pos = nx.circular_layout(graph)
 #pos = nx.spring_layout(graph)
-nx.draw(graph, pos, with_labels=True, node_size=10, font_size=4)
+nx.draw(graph, pos, with_labels=True, node_size=100, font_size=7, node_color="lightblue", edge_color="gray")
 plt.title("Graf słów języka łotewskiego")
 plt.savefig("graph.png")
 plt.show()
