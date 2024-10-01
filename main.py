@@ -12,10 +12,14 @@ def get_item(item):
     return item[1]
 
 # Czyszczenie tekstu
+'''''
 url = "https://lv.wikipedia.org/wiki/Latvija"
 response = requests.get(url)
 soup = BeautifulSoup(response.text, 'html.parser')
 text = soup.get_text()
+'''''
+with open("text.txt", "r", encoding="utf-8") as file:
+    text = file.read()
 text = re.sub(r'[^a-zāčēģīķļņōšūžA-ZĀČĒĢĪĶĻŅŌŠŪŽ]+', ' ', text.lower())
 words = text.split()
 
@@ -54,7 +58,7 @@ sorted_degrees = sorted(degrees.items(), key=get_item, reverse=True)
 core = 100
 core_vertices = sorted_degrees[:core]
 
-print("Najczęściej występując 100 słów- rdzeń języka:")
+print("Najczęściej występujące 100 słów- rdzeń języka:")
 for vertex, degree in core_vertices:
     print(f"Słowo (wierzchołek) {vertex}, liczba sąsiadów: {degree}.")
 
