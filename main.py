@@ -6,6 +6,9 @@ import requests
 import pandas as pd
 import matplotlib.pyplot as plt
 import networkx as nx
+from nltk.tokenize import sent_tokenize, word_tokenize
+import nltk
+nltk.download('punkt')
 matplotlib.use('TkAgg')
 
 def get_item(item):
@@ -20,10 +23,16 @@ text = soup.get_text()
 '''''
 with open("text.txt", "r", encoding="utf-8") as file:
     text = file.read()
-text = re.sub(r'[^a-zāčēģīķļņōšūžA-ZĀČĒĢĪĶĻŅŌŠŪŽ]+', ' ', text.lower())
-words = text.split()
+
+sentences = sent_tokenize(text)
+
+clean_sentences = []
+for sentence in sentences:
+    clean_sentence = re.sub(r'[^a-zāčēģīķļņōšūžA-ZĀČĒĢĪĶĻŅŌŠŪŽ ]+', ' ', sentence.lower())  # Usuń wszystko poza literami i spacjami
+    clean_sentences.append(clean_sentence)
 
 # Prawo Zipfa
+words = ' '.join(clean_sentences).split()
 word_counts = Counter(words)
 ranked_words = sorted(word_counts.items(), key=get_item, reverse=True)
 
@@ -42,8 +51,16 @@ plt.show()
 
 # Graf
 graph = nx.Graph()
+'''
 for i in range(len(words) - 1):
     graph.add_edge(words[i], words[i+1])
+'''
+for clean_sentence in clean_sentences:
+    sentence_words = clean_sentence.split()
+    # krawędzie między sąsiadującymi słowami, które są w jednym zdaniu
+    sentence_words = [word for word in sentence_words if len(word) > 1]
+    for i in range(len(sentence_words) - 1):
+        graph.add_edge(sentence_words[i], sentence_words[i + 1])
 
 plt.figure(figsize=(20, 20))
 
