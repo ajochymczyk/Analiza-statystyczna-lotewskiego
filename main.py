@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 import networkx as nx
 from nltk.tokenize import sent_tokenize, word_tokenize
 import nltk
-nltk.download('punkt')
+nltk.download('punkt_tab')
 matplotlib.use('TkAgg')
 
 def get_item(item):
